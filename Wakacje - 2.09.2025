@@ -1,0 +1,95 @@
+#Main Activity
+
+package com.example.wakacjemobile;
+
+import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        EditText editText = findViewById(R.id.daysToEnd);
+        TextView textView = findViewById(R.id.holidayStart);
+
+        LocalDate holidaysStarts = lastSaturdayOfJune(LocalDate.now().getYear()); //Jeśli po dacie rozpoczęcia to if
+        if (LocalDate.now().isAfter(holidaysStarts)){
+            holidaysStarts = lastSaturdayOfJune(LocalDate.now().getYear()+1);
+        }
+
+        textView.setText(String.format("Wakacje zaczynają się %s", holidaysStarts.toString()));
+        long days = ChronoUnit.DAYS.between(LocalDate.now(), holidaysStarts);
+        editText.setText(String.valueOf(days));
+    }
+
+    private LocalDate lastSaturdayOfJune(int year){
+        LocalDate endOfJune = LocalDate.of(year, 6, 30);
+        while(endOfJune.getDayOfWeek() != DayOfWeek.SATURDAY){
+            endOfJune = endOfJune.minusDays(1);
+        }
+        return endOfJune;
+    }
+}
+
+#Activity_Main
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pozostało do wakacji:"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/daysToEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textSize="25sp"
+        android:paddingHorizontal="30dp"
+        android:text="0"
+        android:enabled="false"/>
+
+    <TextView
+        android:id="@+id/holidayStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Wakacji:"
+        android:textAlignment="center"
+        android:textSize="25dp" />
+
+
+</LinearLayout>
