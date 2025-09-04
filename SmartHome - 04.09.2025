@@ -1,0 +1,216 @@
+#Activity_Main
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Smart Home"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oświetlenie"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rolety"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brama"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status:"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oświetlenie:"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+
+        <TextView
+            android:id="@+id/status1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rolety:"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+
+        <TextView
+            android:id="@+id/status2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brama:"
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+
+        <TextView
+            android:id="@+id/status3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="30sp"
+            android:layout_weight="2"/>
+    </LinearLayout>
+</LinearLayout>
+
+#MainActivity
+
+package com.example.smarthome;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.widget.Switch;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        SwitchCompat switch1 = findViewById(R.id.switch1);
+        SwitchCompat switch2 = findViewById(R.id.switch2);
+        SwitchCompat switch3 = findViewById(R.id.switch3);
+
+        TextView status1 = findViewById(R.id.status1);
+        TextView status2 = findViewById(R.id.status2);
+        TextView status3 = findViewById(R.id.status3);
+
+        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                status1.setText("Włączone");
+            }else {
+                status1.setText("Wyłączone");
+            }
+        });
+
+        switch2.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                status2.setText("Włączone");
+            }else {
+                status2.setText("Wyłączone");
+            }
+        });
+
+        switch3.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                status3.setText("Włączone");
+            }else {
+                status3.setText("Wyłączone");
+            }
+        });
+    }
+}
