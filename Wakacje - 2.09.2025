@@ -1,6 +1,6 @@
 #Main Activity
 
-package com.example.wakacjemobile;
+package com.example.holidays;
 
 import android.os.Bundle;
 import android.widget.EditText;
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.holidayStart);
 
         LocalDate holidaysStarts = lastSaturdayOfJune(LocalDate.now().getYear()); //Jeśli po dacie rozpoczęcia to if
+        
         if (LocalDate.now().isAfter(holidaysStarts)){
             holidaysStarts = lastSaturdayOfJune(LocalDate.now().getYear()+1);
         }
@@ -49,6 +50,16 @@ public class MainActivity extends AppCompatActivity {
         }
         return endOfJune;
     }
+    
+    private LocalDate endOfHolidays(int year){
+        LocalDate end = LocalDate.of(year, 9, 1);
+        if(end.getDayOfWeek() == DayOfWeek.SATURDAY){
+            end = end.plusDays(2);
+        } else if (end.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            end = end.plusDays(1);
+        }
+        return end;
+    } 
 }
 
 #Activity_Main
