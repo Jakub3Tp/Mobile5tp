@@ -1,0 +1,275 @@
+#Activity_Main
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sortownik"
+        android:textAlignment="center"
+        android:textSize="35sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Od:"
+            android:textSize="25sp"
+            android:layout_weight="2"
+            />
+
+        <EditText
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="text" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Do:"
+            android:textSize="25sp"
+            android:layout_weight="2"/>
+
+        <EditText
+            android:id="@+id/to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="text" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ile:"
+            android:textSize="25sp"
+            android:layout_weight="2" />
+
+        <EditText
+            android:id="@+id/howmany"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="text" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/random"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Losuj"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:ems="10"
+            android:text=""
+            android:textSize="25sp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+       <RadioGroup
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <RadioButton
+               android:id="@+id/bubble"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:text="Bąbelkowe"
+               android:textSize="25sp"
+               android:layout_weight="1"/>
+
+           <RadioButton
+               android:id="@+id/choice"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:text="Przez Wybór"
+               android:textSize="25sp"
+               android:layout_weight="1"/>
+       </RadioGroup>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sortuj"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+</LinearLayout>
+
+#MainActivity
+
+package com.example.sortownik;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+    List<Integer> list = new ArrayList<>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        EditText from = findViewById(R.id.from);
+        EditText to = findViewById(R.id.to);
+        EditText howmany = findViewById(R.id.howmany);
+        EditText show = findViewById(R.id.show);
+
+        Button random = findViewById(R.id.random);
+        Button sort = findViewById(R.id.sort);
+
+        RadioButton bubble = findViewById(R.id.bubble);
+        RadioButton choice = findViewById(R.id.choice);
+
+        random.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fromtext = from.getText().toString();
+                int fromNumber = Integer.parseInt(fromtext);
+
+                String totext = to.getText().toString();
+                int toNumber = Integer.parseInt(totext);
+
+                String howmanytext = howmany.getText().toString();
+                int howmanyNumber = Integer.parseInt(howmanytext);
+
+                Random rand = new Random();
+                List<Integer> list = new ArrayList<>();
+                for (int i = 0; i < howmanyNumber; i++){
+                    list.add(rand.nextInt(toNumber - fromNumber + 1) + fromNumber);
+                }
+
+                String conclusion = "";
+                    for (int i = 0; i < list.size(); i++){
+                        conclusion += list.get(i) + " ";
+                    }
+                    show.setText(conclusion.trim());
+                }
+        });
+
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bubble.isChecked()){
+                    bubbleS(list);
+                } else if (choice.isChecked()) {
+                    choiceS(list);
+                }
+
+                StringBuilder sorted = new StringBuilder();
+                for (int i = 0; i < list.size(); i++){
+                    sorted.append(list.get(i)).append(" ");
+                }
+                show.setText(sorted.toString().trim());
+            }
+        });
+    }
+    private void bubbleS(List<Integer> list){
+        int n = list.size();
+        for (int i = 0; i < n - i - 1; i++ ){
+            for (int j = 0; j < n - i - 1; j++){
+                if (list.get(j) > list.get(j + 1)){
+                    int temp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set(j = 1, temp);
+                }
+            }
+        }
+    }
+
+    private void choiceS(List<Integer> list){
+        int n = list.size();
+        for (int i = 0; i < n - 1; i++){
+            int min = i;
+            for (int j =  i + 1; j < n; j++){
+                if (list.get(j) < list.get(min)){
+                    min = j;
+                }
+            }
+            int temp = list.get(min);
+            list.set(min, list.get(i));
+            list.set(i, temp);
+        }
+    }
+}
