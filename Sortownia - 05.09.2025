@@ -158,12 +158,11 @@
 
 #MainActivity
 
-package com.example.sortownik;
+package com.example.sortowniki;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -179,6 +178,33 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     List<Integer> list = new ArrayList<>();
+    private void bubbleS(List<Integer> list){
+        int n = list.size();
+        for (int i = 0; i < n - 1; i++ ){
+            for (int j = 0; j < n - i - 1; j++){
+                if (list.get(j) > list.get(j + 1)){
+                    int temp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set(j + 1, temp);
+                }
+            }
+        }
+    }
+
+    private void choiceS(List<Integer> list) {
+        int n = list.size();
+        for (int i = 0; i < n - 1; i++) {
+            int min = i;
+            for (int j = i + 1; j < n; j++) {
+                if (list.get(j) < list.get(min)) {
+                    min = j;
+                }
+            }
+            int temp = list.get(min);
+            list.set(min, list.get(i));
+            list.set(i, temp);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,17 +241,17 @@ public class MainActivity extends AppCompatActivity {
                 int howmanyNumber = Integer.parseInt(howmanytext);
 
                 Random rand = new Random();
-                List<Integer> list = new ArrayList<>();
+                list.clear();
                 for (int i = 0; i < howmanyNumber; i++){
                     list.add(rand.nextInt(toNumber - fromNumber + 1) + fromNumber);
                 }
 
                 String conclusion = "";
-                    for (int i = 0; i < list.size(); i++){
-                        conclusion += list.get(i) + " ";
-                    }
-                    show.setText(conclusion.trim());
+                for (int i = 0; i < list.size(); i++){
+                    conclusion += list.get(i) + " ";
                 }
+                show.setText(conclusion.trim());
+            }
         });
 
         sort.setOnClickListener(new View.OnClickListener() {
@@ -244,32 +270,5 @@ public class MainActivity extends AppCompatActivity {
                 show.setText(sorted.toString().trim());
             }
         });
-    }
-    private void bubbleS(List<Integer> list){
-        int n = list.size();
-        for (int i = 0; i < n - i - 1; i++ ){
-            for (int j = 0; j < n - i - 1; j++){
-                if (list.get(j) > list.get(j + 1)){
-                    int temp = list.get(j);
-                    list.set(j, list.get(j + 1));
-                    list.set(j = 1, temp);
-                }
-            }
-        }
-    }
-
-    private void choiceS(List<Integer> list){
-        int n = list.size();
-        for (int i = 0; i < n - 1; i++){
-            int min = i;
-            for (int j =  i + 1; j < n; j++){
-                if (list.get(j) < list.get(min)){
-                    min = j;
-                }
-            }
-            int temp = list.get(min);
-            list.set(min, list.get(i));
-            list.set(i, temp);
-        }
     }
 }
