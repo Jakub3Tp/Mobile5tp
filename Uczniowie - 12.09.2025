@@ -92,6 +92,16 @@ public class MainActivity extends AppCompatActivity {
                 level.setText(String.valueOf(student.getLevel()));
 
             }
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedStudent == 1){
+                    students.remove(selectedStudent);
+                    arrayAdapter.notifyDataSetChanged();
+                    selectedStudent = -1;
+                    delete.setEnabled(false);
+                }
+            }
         });
     }
 }
