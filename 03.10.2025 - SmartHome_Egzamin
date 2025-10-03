@@ -177,11 +177,10 @@ public class MainActivity extends AppCompatActivity {
 
         EditText number = findViewById(R.id.editNumber);
 
-        int numberW = Integer.parseInt(number.getText().toString());
-
         agreed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int numberW = Integer.parseInt(number.getText().toString());
                 if (numberW > 1 && numberW <= 12) {
                     numberOfW.setText("Numer prania: " + numberW);
                 }
