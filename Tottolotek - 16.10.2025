@@ -1,0 +1,355 @@
+#MainActivity
+
+package com.example.totolotek;
+
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+    private static String idChannel = "Channel";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        createNotificationChannel();
+
+        EditText number1 = findViewById(R.id.editNumber);
+        EditText number2 = findViewById(R.id.editNumber2);
+        EditText number3 = findViewById(R.id.editNumber3);
+        EditText number4 = findViewById(R.id.editNumber4);
+        EditText number5 = findViewById(R.id.editNumber5);
+        EditText number6 = findViewById(R.id.editNumber6);
+
+        TextView text = findViewById(R.id.textView);
+
+        Button result1 = findViewById(R.id.result1);
+        Button result2 = findViewById(R.id.result2);
+        Button result3 = findViewById(R.id.result3);
+        Button result4 = findViewById(R.id.result4);
+        Button result5 = findViewById(R.id.result5);
+        Button result6 = findViewById(R.id.result6);
+
+        Button chance = findViewById(R.id.random);
+
+        chance.setOnClickListener(v -> {
+            if (number1.getText().toString().isEmpty() || number2.getText().toString().isEmpty() || number3.getText().toString().isEmpty() || number4.getText().toString().isEmpty() || number5.getText().toString().isEmpty() || number6.getText().toString().isEmpty()){
+                text.setText("Wypełnij wszystkie pola liczbami od 1-49!");
+                return;
+            }
+
+            int n1 = Integer.parseInt(number1.getText().toString());
+            int n2 = Integer.parseInt(number2.getText().toString());
+            int n3 = Integer.parseInt(number3.getText().toString());
+            int n4 = Integer.parseInt(number4.getText().toString());
+            int n5 = Integer.parseInt(number5.getText().toString());
+            int n6 = Integer.parseInt(number6.getText().toString());
+
+            if (n1 < 1 || n1 > 49 || n2 < 1 || n2 > 49 ||n3 < 1 || n3 > 49 ||n4 < 1 || n4> 49 ||n5 < 1 || n5 > 49 || n6 < 1 || n6 > 49){
+                text.setText("Liczby muszę byc w zakresie od 1-49!");
+            }
+
+            if (n1 == n2 || n1 == n3 || n1 == n4 || n1 == n5 || n1 == n6 || n2 == n3 || n2 == n4 || n2 == n5 || n2 == n6 || n3 == n4 || n3 == n5 || n3 == n6 || n4 == n5 || n4 == n6 || n5 == n6){
+                text.setText("Liczby nie mogą się powtarzać");
+            }
+
+            Random rand = new Random();
+            int[] draw = new int[6];
+            int count = 0;
+
+            while (count < 6){
+                int num = rand.nextInt(49) + 1;
+                boolean exists = false;
+
+                for (int i = 0; i < count; i++){
+                    if (draw[i] == num){
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (!exists){
+                    draw[count] = num;
+                    count++;
+                }
+            }
+
+            result1.setText(String.valueOf(draw[0]));
+            result2.setText(String.valueOf(draw[1]));
+            result3.setText(String.valueOf(draw[2]));
+            result4.setText(String.valueOf(draw[3]));
+            result5.setText(String.valueOf(draw[4]));
+            result6.setText(String.valueOf(draw[5]));
+
+            int hitedNumbers = 0;
+            if (n1 == draw[0] || n1 == draw[1] || n1 == draw[2] || n1 == draw[3] || n1 == draw[4] || n1 == draw[5]){
+                hitedNumbers++;
+                result1.setBackgroundColor(Color.rgb(1, 200, 250));
+            }else {
+                result1.setBackgroundColor(Color.rgb(198, 0, 2));
+            }
+            if (n2 == draw[0] || n2 == draw[1] || n2 == draw[2] || n2 == draw[3] || n2 == draw[4] || n2 == draw[5]){
+                hitedNumbers++;
+                result2.setBackgroundColor(Color.rgb(1, 200, 250));
+            }else {
+                result2.setBackgroundColor(Color.rgb(198, 0, 2));
+            }
+            if (n3 == draw[0] || n3 == draw[1] || n3 == draw[2] || n3 == draw[3] || n3 == draw[4] || n3 == draw[5]){
+                hitedNumbers++;
+                result3.setBackgroundColor(Color.rgb(1, 200, 250));
+            }else {
+                result3.setBackgroundColor(Color.rgb(198, 0, 2));
+            }
+            if (n4 == draw[0] || n4 == draw[1] || n4 == draw[2] || n4 == draw[3] || n4 == draw[4] || n4 == draw[5]){
+                hitedNumbers++;
+                result4.setBackgroundColor(Color.rgb(1, 200, 250));
+            }else {
+                result4.setBackgroundColor(Color.rgb(198, 0, 2));
+            }
+            if (n5 == draw[0] || n5 == draw[1] || n5 == draw[2] || n5 == draw[3] || n5 == draw[4] || n5 == draw[5]){
+                hitedNumbers++;
+                result5.setBackgroundColor(Color.rgb(1, 200, 250));
+            }else {
+                result5.setBackgroundColor(Color.rgb(198, 0, 2));
+            }
+            if (n6 == draw[0] || n6 == draw[1] || n6 == draw[2] || n6 == draw[3] || n6 == draw[4] || n6 == draw[5]){
+                hitedNumbers++;
+                result6.setBackgroundColor(Color.rgb(1, 200, 250));
+            }else {
+                result6.setBackgroundColor(Color.rgb(198, 0, 2));
+            }
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, idChannel);
+            builder.setSmallIcon(android.R.drawable.stat_notify_chat)
+                    .setContentTitle("Wynik")
+                    .setContentText("Udało ci się trafć " + hitedNumbers + " liczb")
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM){
+                    requestPermissions(new String[]{ Manifest.permission.POST_NOTIFICATIONS },
+                            1);
+                }
+            }
+            NotificationManagerCompat.from(MainActivity.this).notify(1, builder.build());
+        });
+
+    }
+    private void createNotificationChannel(){
+        NotificationChannel notificationChannel = new NotificationChannel(idChannel, "Kanalik", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(notificationChannel);
+    }
+
+}
+
+#Activity_Main
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Lotto 24"
+        android:textSize="50sp"
+        android:textColor="#c60002" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="20dp">
+
+        <EditText
+            android:id="@+id/editNumber"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/editNumber2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/editNumber3"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/editNumber4"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/editNumber5"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/editNumber6"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wpisz 6 liczb z zakresu od 1-49"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/random"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Losuj"
+        android:width="150dp"
+        android:layout_gravity="center"
+        android:layout_margin="25dp"
+        android:backgroundTint="#c60002" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="20dp">
+
+        <Button
+            android:id="@+id/result1"
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:backgroundTint="#c60002"
+            android:clickable="false"
+            android:text="?"
+            android:textSize="10sp"
+            />
+
+        <Button
+            android:id="@+id/result2"
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:clickable="false"
+            android:text="?"
+            android:textSize="10sp"
+            android:backgroundTint="#c60002"
+            android:layout_marginTop="65dp"/>
+
+        <Button
+            android:id="@+id/result3"
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:text="?"
+            android:clickable="false"
+            android:textSize="10sp"
+            android:backgroundTint="#c60002"
+            />
+
+        <Button
+            android:id="@+id/result4"
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:text="?"
+            android:clickable="false"
+            android:textSize="10sp"
+            android:backgroundTint="#c60002"
+            android:layout_marginTop="65dp"/>
+
+        <Button
+            android:id="@+id/result5"
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:text="?"
+            android:clickable="false"
+            android:textSize="10sp"
+            android:backgroundTint="#c60002" />
+
+        <Button
+            android:id="@+id/result6"
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:text="?"
+            android:clickable="false"
+            android:textSize="10sp"
+            android:backgroundTint="#c60002"
+            android:layout_marginTop="65dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/lotto"
+        android:layout_margin="50dp"/>
+
+
+</LinearLayout>
+
+#AndroidManifest
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Totolotek">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
